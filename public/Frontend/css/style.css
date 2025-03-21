@@ -1,0 +1,135 @@
+/* Reset and Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Heading */
+h1 {
+  color: #00bcd4;
+  font-size: 2.2em;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* Labels and Inputs */
+label {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+select, input[type="text"] {
+  padding: 12px;
+  margin: 12px 0;
+  width: 85%;
+  max-width: 450px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  font-size: 1em;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus, select:focus {
+  border-color: #00bcd4;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
+}
+
+/* Button */
+button {
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #673ab7, #00bcd4);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4);
+}
+
+/* Recipe Section */
+#recipes {
+  margin-top: 30px;
+}
+
+.recipe-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin: 20px auto;
+  text-align: left;
+  max-width: 550px;
+  transition: 0.3s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 188, 212, 0.5);
+}
+
+.recipe-card img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.recipe-card h3 {
+  font-size: 1.6em;
+  color: #00bcd4;
+  margin-bottom: 10px;
+}
+
+.recipe-card p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #bdbdbd;
+}
+
+.recipe-card a {
+  text-decoration: none;
+  color: #00bcd4;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.recipe-card a:hover {
+  color: #673ab7;
+}
+
+/* List Styling */
+ul {
+  list-style: none;
+  padding-left: 20px;
+  font-size: 1.1em;
+}
+
+ul li {
+  margin: 6px 0;
+  padding-left: 15px;
+  position: relative;
+}
+
+ul li::before {
+  content: "•";
+  color: #00bcd4;
+  position: absolute;
+  left: 0;
+}
