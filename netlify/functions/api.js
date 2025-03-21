@@ -1,38 +1,53 @@
-async function getRecommendations() {
-  const diet = document.getElementById('diet').value;
-  const ingredients = document.getElementById('ingredients').value;
-  
-  // call backend api
-  const response = await fetch(`http://localhost:3000/api/recommendations?diet=${diet}&ingredients=${ingredients}`);
-  
-  if (response.ok) {
-    const data = await response.json();
-    displayRecipes(data);
-  } else {
-    alert("Error fetching recipes.");
+require('dotenv').config({ path: './.env' });
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+
+const app = express();
+const PORT = 3000;
+
+// enable cors
+app.use(cors());
+
+// spoonacular api key from the env variable
+const SPOONACULAR_API_KEY = process.env.SPOONACULAR_API_KEY;
+const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes';
+
+// func to fetch recipes from spoonacular
+async function getRecipeRecommendations(diet, ingredients) {
+  try {
+    const response = await axios.get(`${SPOONACULAR_BASE_URL}/findByIngredients`, {
+      params: {
+        ingredients: ingredients.join(','),
+        diet: diet,  // dietary restrictions
+        number: 5,   // number of recipes to fetch
+        apiKey: SPOONACULAR_API_KEY,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching recipes", error);
+    throw error;
   }
 }
 
-function displayRecipes(recipes) {
-  const recipesDiv = document.getElementById('recipes');
-  recipesDiv.innerHTML = '';  // clear previous results
-
-  if (recipes.length === 0) {
-    recipesDiv.innerHTML = 'No recipes found for the given ingredients and diet.';
-    return;
+// api route for recommendations
+app.get('/api/recommendations', async (req, res) => {
+  const { diet, ingredients } = req.query; // get dietary restrictions and ingredients from query
+  if (!diet || !ingredients) {
+    return res.status(400).send('Diet and ingredients are required');
   }
 
-  recipes.forEach(recipe => { // display when searched
-    const recipeElement = document.createElement('div');
-    recipeElement.innerHTML = `
-      <h3>${recipe.title}</h3>
-      <img src="${recipe.image}" alt="${recipe.title}" width="200px">
-      <a href="${recipe.sourceUrl}" target="_blank">View Recipe</a>
-      <h4>Ingredients:</h4>
-      <ul>
-        ${recipe.usedIngredients.map(ingredient => `<li>${ingredient.name}</li>`).join('')}
-      </ul>
-    `;
-    recipesDiv.appendChild(recipeElement);
-  });
-}
+  try {
+    const ingredientsArray = ingredients.split(','); // convert comma seperated ingredients to array
+    const recipes = await getRecipeRecommendations(diet, ingredientsArray);
+    res.json(recipes);
+  } catch (error) {
+    res.status(500).send('Error fetching recipe recommendations');
+  }
+});
+
+// start server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
