@@ -3,7 +3,7 @@ async function getRecommendations() {
   const ingredients = document.getElementById('ingredients').value;
   
   // call backend api
-  const response = await fetch(`/.netlify/functions/api?diet=${diet}&ingredients=${ingredients}`);
+  const response = await fetch(`/api?diet=${diet}&ingredients=${ingredients}`);
   
   if (response.ok) {
     const data = await response.json();
